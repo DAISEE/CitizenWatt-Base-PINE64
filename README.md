@@ -1,5 +1,6 @@
 # CitizenWatt for PINE64+
-Adaptations for Pine66 board used for prototyping
+  
+Adaptations for PINE64 board used for prototyping  
 ![PINE64+ board](/images/PINE64Board.jpeg)
 
  /!\ work in progress
