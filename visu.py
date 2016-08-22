@@ -6,7 +6,7 @@ import os
 import requests
 import subprocess
 import sys
-
+import logging
 
 from libcitizenwatt import cache
 from libcitizenwatt import database
@@ -18,6 +18,24 @@ from bottlesession import PickleSession, authenticator
 from libcitizenwatt.config import Config
 from sqlalchemy import create_engine, desc
 from sqlalchemy.exc import OperationalError, ProgrammingError
+from logging.handlers import RotatingFileHandler
+
+
+# logger
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
+file_handler = RotatingFileHandler('activity.log', 'a', 1000000, 1)
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+ 
+steam_handler = logging.StreamHandler()
+steam_handler.setLevel(logging.DEBUG)
+logger.addHandler(steam_handler)
+
+logger.info('starting visu.py')
 
 
 # =========
@@ -103,10 +121,13 @@ def api_auth(post, db):
 # Initializations
 # ===============
 config = Config()
+
 database_url = (config.get("database_type") + "://" + config.get("username") +
                 ":" + config.get("password") + "@" + config.get("host") + "/" +
                 config.get("database"))
-engine = create_engine(database_url, echo=config.get("debug"))
+
+#engine = create_engine(database_url, echo=config.get("debug"))
+engine = create_engine("postgresql+psycopg2://citizenwatt:citizenwatt@localhost/citizenwatt")
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -983,5 +1004,6 @@ if __name__ == '__main__':
     SimpleTemplate.defaults["get_url"] = app.get_url
     SimpleTemplate.defaults["API_URL"] = app.get_url("index")
     SimpleTemplate.defaults["valid_session"] = lambda: session_manager.get_session()['valid']
-    run(app, host="0.0.0.0", port=config.get("port"), debug=config.get("debug"),
+    # passage en mode DEBUG
+    run(app, host="0.0.0.0", port=config.get("port"), debug=True,
         reloader=config.get("autoreload"), server="cherrypy")
