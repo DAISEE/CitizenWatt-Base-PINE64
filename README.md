@@ -13,10 +13,10 @@ Adaptations for Pine66 board used for prototyping
 ** pycrypto
 ** psycopg2 for communication with the PostgreSQL database
 
-* NFR24 library (not tested yet on PINE64+)
+* NFR24 library (not tested yet on PINE64+)  
 
 
-## Documentation :
+## Documentation
 Hackpad (in French) : https://hackpad.com/DAISEE-Installation-dEthereum-et-CitizenWatt-sur-une-carte-Pine64-CCIvAqntMVV
 
 
