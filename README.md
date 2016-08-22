@@ -1,10 +1,21 @@
-## Package needed
+Adaptations for Pine64+
+ /!\ work in progress
 
-* sqlalchemy
-* cherrypy
-* numpy
-* pycrypto
-* psycopg2 for communication with the PostgreSQL database
+
+## Prerequisites
+* python 3.4, and the following libraries :
+** sqlalchemy
+** cherrypy
+** numpy
+** pycrypto
+** psycopg2 for communication with the PostgreSQL database
+
+* NFR24 library (not tested yet on PINE64+)
+
+
+## Documentation :
+Hackpad (in French) : https://hackpad.com/DAISEE-Installation-dEthereum-et-CitizenWatt-sur-une-carte-Pine64-CCIvAqntMVV
+
 
 ## API
 
