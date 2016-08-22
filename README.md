@@ -6,12 +6,12 @@ Adaptations for Pine66 board used for prototyping
 
 
 ## Prerequisites
-* python 3.4, and the following libraries :
-** sqlalchemy
-** cherrypy
-** numpy
-** pycrypto
-** psycopg2 for communication with the PostgreSQL database
+* python 3.4, and the following libraries :  
+** sqlalchemy  
+** cherrypy  
+** numpy  
+** pycrypto  
+** psycopg2 for communication with the PostgreSQL database  
 
 * NFR24 library (not tested yet on PINE64+)  
 
