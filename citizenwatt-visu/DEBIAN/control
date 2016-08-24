@@ -1,0 +1,12 @@
+Source: citizenwatt-visu
+Maintainer: Alexandre Faraino <alex@citizenwatt.paris>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 9)
+Package: citizenwatt-visu
+Architecture: arm64
+Depends: python3, supervisor, postgresql
+Version: 0.4-2
+Description: CitizenWatt WebUI
+ A WebUI for the CitizenWatt Project. Install and configure through the WebUI. 
