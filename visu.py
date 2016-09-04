@@ -21,21 +21,31 @@ from sqlalchemy.exc import OperationalError, ProgrammingError
 from logging.handlers import RotatingFileHandler
 
 
-# logger
+# création de l'objet logger qui va nous servir à écrire dans les logs
 logger = logging.getLogger()
+# on met le niveau du logger à DEBUG, comme ça il écrit tout
 logger.setLevel(logging.DEBUG)
 
+# création d'un formateur qui va ajouter le temps, le niveau
+# de chaque message quand on écrira un message dans le log
 formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
+# création d'un handler qui va rediriger une écriture du log vers
+# un fichier en mode 'append', avec 1 backup et une taille max de 1Mo
 file_handler = RotatingFileHandler('activity.log', 'a', 1000000, 1)
+# on lui met le niveau sur DEBUG, on lui dit qu'il doit utiliser le formateur
+# créé précédement et on ajoute ce handler au logger
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
  
+# création d'un second handler qui va rediriger chaque écriture de log
+# sur la console
 steam_handler = logging.StreamHandler()
 steam_handler.setLevel(logging.DEBUG)
 logger.addHandler(steam_handler)
-
-logger.info('starting visu.py')
+ 
+# test
+logger.info('Hello')
 
 
 # =========
@@ -121,13 +131,22 @@ def api_auth(post, db):
 # Initializations
 # ===============
 config = Config()
+#flag = True
+
+logger.info(config.get("debug"))
 
 database_url = (config.get("database_type") + "://" + config.get("username") +
                 ":" + config.get("password") + "@" + config.get("host") + "/" +
                 config.get("database"))
 
+logger.info(database_url)
+
 #engine = create_engine(database_url, echo=config.get("debug"))
+#engine = create_engine(database_url, echo=flag)
 engine = create_engine("postgresql+psycopg2://citizenwatt:citizenwatt@localhost/citizenwatt")
+
+logger.info(engine)
+
 
 app = Bottle()
 plugin = sqlalchemy.Plugin(
@@ -142,6 +161,8 @@ app.install(plugin)
 
 session_manager = PickleSession()
 valid_user = authenticator(session_manager, login_url='/login')
+
+logger.info(valid_user)
 
 
 # ===
@@ -610,12 +631,14 @@ def index():
 def conso(db):
     """Conso view"""
     provider = db.query(database.Provider).filter_by(current=1).first()
+    logger.info(provider)
     return {"provider": provider.name}
 
 
 @app.route("/reset_timer/<sensor:int>", apply=valid_user())
 def reset_timer(sensor, db):
     db.query(database.Sensor).filter_by(id=sensor).update({"last_timer": 0})
+    logger.info("db.query")
     redirect("/settings")
 
 
@@ -1004,6 +1027,5 @@ if __name__ == '__main__':
     SimpleTemplate.defaults["get_url"] = app.get_url
     SimpleTemplate.defaults["API_URL"] = app.get_url("index")
     SimpleTemplate.defaults["valid_session"] = lambda: session_manager.get_session()['valid']
-    # passage en mode DEBUG
     run(app, host="0.0.0.0", port=config.get("port"), debug=True,
         reloader=config.get("autoreload"), server="cherrypy")
