@@ -139,7 +139,6 @@ database_url = (config.get("database_type") + "://" + config.get("username") +
 logger.info(database_url)
 
 #engine = create_engine(database_url, echo=config.get("debug"))
-#engine = create_engine(database_url, echo=flag)
 engine = create_engine("postgresql+psycopg2://citizenwatt:citizenwatt@localhost/citizenwatt")
 
 logger.info(engine)
