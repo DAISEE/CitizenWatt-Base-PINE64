@@ -5,6 +5,11 @@ Adaptations for PINE64 board used for prototyping
 
  /!\ work in progress
 
+## Hardware
+- PINE64+ Board
+- nRF24L01+ transceiver, to communicate with CitizenWatt Sensor
+- Arduino Uno, to link the PINE64+ board and the RF24L01+ (the transceiver needs the use of SPI, but there is no software support for SPI on the PINE64+ GPIO for the moment)
+
 
 ## Prerequisites
 * python 3.4, and the following libraries :  
@@ -14,7 +19,7 @@ Adaptations for PINE64 board used for prototyping
 ** pycrypto  
 ** psycopg2 for communication with the PostgreSQL database  
 
-* NFR24 library (not tested yet on PINE64+)  
+* NFR24 library (for Arduino)
 
 
 ## Documentation
