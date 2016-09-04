@@ -44,9 +44,6 @@ steam_handler = logging.StreamHandler()
 steam_handler.setLevel(logging.DEBUG)
 logger.addHandler(steam_handler)
  
-# test
-logger.info('Hello')
-
 
 # =========
 # Functions
