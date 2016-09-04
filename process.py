@@ -15,6 +15,8 @@ from libcitizenwatt.config import Config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+filename = "/tmp/sensor.log"
+
 
 def get_rate_type(db):
     """Returns "day" or "night" according to current time
@@ -34,6 +36,7 @@ def get_rate_type(db):
             return 1
         else:
             return 0
+
 
 def get_cw_sensor():
     """Returns the citizenwatt sensor object or None"""
@@ -59,23 +62,24 @@ database.Base.metadata.create_all(engine)
 sensor = get_cw_sensor()
 while not sensor or not sensor.aes_key:
     tools.warning("Install is not complete ! " +
-                    "Visit http://citizenwatt.local first.")
+                  "Visit http://citizenwatt.local first.")
     time.sleep(1)
     sensor = get_cw_sensor()
 
 key = json.loads(sensor.aes_key)
 key = struct.pack("<16B", *key)
 
+try:
+    with open(filename):
+        pass
+except FileNotFoundError:
+    sys.exit("Unable to open file " + filename + ".")
 
 try:
-    assert(stat.S_ISFIFO(os.stat(config.get("named_fifo")).st_mode))
-except (AssertionError, FileNotFoundError):
-    sys.exit("Unable to open fifo " + config.get("named_fifo") + ".")
-
-try:
-    with open(config.get("named_fifo"), 'rb') as fifo:
+    with open(config.get(filename), 'rb'):
         while True:
-            measure = fifo.read(16)
+            FileTemp = open(filename, 'rb')
+            measure = FileTemp.read(16)
             print("New encrypted packet:" + str(measure))
 
             decryptor = AES.new(key, AES.MODE_ECB)
@@ -88,22 +92,26 @@ try:
             battery = measure[2]
             timer = measure[3]
 
-            if(sensor.last_timer and sensor.last_timer > 0 and
-               sensor.last_timer < 4233600000 and
-               timer < sensor.last_timer):
+            if (sensor.last_timer and sensor.last_timer > 0 and
+                        sensor.last_timer < 4233600000 and
+                        timer < sensor.last_timer):
                 tools.warning("Invalid timer in the last packet, skipping it")
             else:
-                db = create_session()
-                measure_db = database.Measures(sensor_id=sensor.id,
+                try:
+                    db = create_session()
+                    measure_db = database.Measures(sensor_id=sensor.id,
                                                value=power,
                                                timestamp=datetime.datetime.now().timestamp(),
                                                night_rate=get_rate_type(db))
-                db.add(measure_db)
-                sensor.last_timer = timer
-                (db.query(database.Sensor)
-                 .filter_by(name="CitizenWatt")
-                 .update({"last_timer": sensor.last_timer}))
-                db.commit()
-                print("Saved successfully.")
+                    db.add(measure_db)
+                    sensor.last_timer = timer
+                    (db.query(database.Sensor)
+                     .filter_by(name="CitizenWatt")
+                     .update({"last_timer": sensor.last_timer}))
+                    db.commit()
+                except Exception as e:
+                    print("DB commit failed : " + e)
+                else:
+                    print("Saved successfully.")
 except KeyboardInterrupt:
     pass

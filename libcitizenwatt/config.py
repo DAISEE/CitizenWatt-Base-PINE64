@@ -40,7 +40,7 @@ class Config():
         self.set("password", "citizenwatt")
         self.set("database", "citizenwatt")
         self.set("host", "localhost")
-        self.set("debug", False)
+        self.set("debug", True)
         self.set("url_energy_providers",
                  "http://dev.citizenwatt.paris/providers/electricity_providers.json")
         self.set("salt", crypt.mksalt())

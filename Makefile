@@ -15,11 +15,13 @@ files=`ls | grep -v debian`
 sup_prefix=$(DESTDIR)/etc/supervisor/conf.d/
 
 # The recommended compiler flags for the Raspberry Pi
-CCFLAGS=-Wall -Ofast -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
+#CCFLAGS=-Wall -Ofast -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
+CCFLAGS=-Wall -g -O
 
 all: receive
 
 receive: receive.cpp
+#      g++ ${CCFLAGS}  -lrf24 $@.cpp -o $@
 	g++ ${CCFLAGS}  -lrf24 $@.cpp -o $@
 
 clean:
