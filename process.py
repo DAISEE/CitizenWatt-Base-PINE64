@@ -22,10 +22,15 @@ filename = "/tmp/sensor.log"
 valeur_seuil = 300
 valeur_top = 3000
 
-#duree interval en mode seuil (ms)
-interval_seuil = 30000
-#duree interval en mode top (ms)
-interval_top = 30000
+#pourcentage d'aleatoire dans la génération des valeurs (10% = param_random)
+param_random = 0.1
+
+#duree interval en mode seuil (s)
+interval_seuil = 30
+#duree interval en mode top (s)
+interval_top = 30
+
+
 
 
 def get_rate_type(db):
@@ -119,31 +124,31 @@ try:
 
 
             if timer_start == 0:
-                timer_start = measure[3]
-                interval_start = measure[3]
+                timer_start = datetime.datetime.now().timestamp()
+                interval_start = datetime.datetime.now().timestamp()
 
                             
-            if(null_top == 0 and measure[3] - interval_start < interval_seuil):
-                power = valeur_seuil + valeur_seuil * 0.1 * random.random()
-                print("niveau=" + str(null_top) + " time=" + str(timer) + "  power=" + str(power))
+            if(null_top == 0 and datetime.datetime.now().timestamp() - interval_start < interval_seuil):
+                power = valeur_seuil + valeur_seuil * param_random * random.random()
+                print("niveau=" + str(null_top) + " time=" + str(datetime.datetime.now().timestamp()) + "  power=" + str(power))
             
-            if(null_top == 0 and measure[3] - interval_start >= interval_seuil):
+            if(null_top == 0 and datetime.datetime.now().timestamp() - interval_start >= interval_seuil):
                 null_top = 1
-                interval_start = measure[3]
-                power = valeur_top + valeur_top * 0.1 * random.random()
+                interval_start = datetime.datetime.now().timestamp()
+                power = valeur_top + valeur_top * param_random * random.random()
                 print("niveau=" + str(null_top) + " time=" + str(timer) + " power=" + str(power))
                 
-            if(null_top == 1 and measure[3] - interval_start < interval_top):
-                power = valeur_top + valeur_top * 0.1 * random.random()
+            if(null_top == 1 and datetime.datetime.now().timestamp() - interval_start < interval_top):
+                power = valeur_top + valeur_top * param_random * random.random()
                 print("niveau=" + str(null_top) + " time=" + str(timer) + " power=" + str(power))
                 
-            if(null_top == 1 and measure[3] - interval_start >= interval_top):
+            if(null_top == 1 and datetime.datetime.now().timestamp() - interval_start >= interval_top):
                 null_top =0
-                interval_start = measure[3]
-                power = valeur_top + valeur_top * 0.1 * random.random()
+                interval_start = datetime.datetime.now().timestamp()
+                power = valeur_top + valeur_top * param_random * random.random()
                 print("niveau=" + str(null_top) + " time=" + str(timer) + " power=" + str(power))
             
-            interval_start = interval_start - 1000
+            interval_start = interval_start
 
             try:
                 db = create_session()
