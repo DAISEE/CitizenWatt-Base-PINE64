@@ -13,7 +13,7 @@ Adaptations for PINE64 board used for the DAISEE prototype. The code is a based 
 
 ## Prerequisites
 
-* python 3.4, and the following libraries :  
+* Python 3.4, and the following libraries :  
 ** sqlalchemy  
 ** cherrypy  
 ** numpy  
