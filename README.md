@@ -2,7 +2,7 @@
   
 ![PINE64+ board](/images/PINE64Board.jpeg)
 
-Adaptations for PINE64 board used for the DAISEE prototype. The code is a based on the one of [CitizenWatt](https://github.com/CitoyensCapteurs/CitizenWatt-Base) (under GPL3 license).  Be careful:  the work is in progress.
+Adaptations for PINE64 board used for the DAISEE prototype. The code is a based on the one of [CitizenWatt](https://github.com/CitoyensCapteurs/CitizenWatt-Base) (GPL3).
 
 ## Hardware
 
