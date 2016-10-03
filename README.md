@@ -1,18 +1,18 @@
 # CitizenWatt for PINE64+
   
-Adaptations for PINE64 board used for prototyping  
 ![PINE64+ board](/images/PINE64Board.jpeg)
-original repo : https://github.com/CitoyensCapteurs/CitizenWatt-Base
 
- /!\ work in progress
+Adaptations for PINE64 board used for the DAISEE prototype. The code is a based on the one of [CitizenWatt](https://github.com/CitoyensCapteurs/CitizenWatt-Base) (under GPL3 license).  Be careful:  the work is in progress.
 
 ## Hardware
+
 - PINE64+ Board
 - nRF24L01+ transceiver, to communicate with CitizenWatt Sensor
 - Arduino Uno, to link the PINE64+ board and the RF24L01+ (the transceiver needs the use of SPI, but there is no software support for SPI on the PINE64+ GPIO for the moment)
 
 
 ## Prerequisites
+
 * python 3.4, and the following libraries :  
 ** sqlalchemy  
 ** cherrypy  
@@ -24,8 +24,8 @@ original repo : https://github.com/CitoyensCapteurs/CitizenWatt-Base
 
 
 ## Documentation
-Hackpad (in French) : https://hackpad.com/DAISEE-Installation-dEthereum-et-CitizenWatt-sur-une-carte-Pine64-CCIvAqntMVV
 
+The documentation is on an Hackpad in french/english for the moment : http://bit.ly/Ethereum-CitizenWatt-Pine64
 
 ## API documentation
 
