@@ -111,17 +111,18 @@ try:
             measure = FileTemp.read(16)
             print("New encrypted packet:" + str(measure))
 
-            decryptor = AES.new(key, AES.MODE_ECB)
-            measure = decryptor.decrypt(measure)
-            measure = struct.unpack("<HHHLlH", measure)
-            print("New incoming measure:" + str(measure))
+            try:
+                decryptor = AES.new(key, AES.MODE_ECB)
+                measure = decryptor.decrypt(measure)
+                measure = struct.unpack("<HHHLlH", measure)
+                print("New incoming measure:" + str(measure))
 
-            voltage = measure[1]
-            battery = measure[2]
-            timer = measure[3]
-            power = measure[0]
-            
-
+                voltage = measure[1]
+                battery = measure[2]
+                timer = measure[3]
+                power = measure[0]
+            except:
+                pass
 
             if timer_start == 0:
                 timer_start = datetime.datetime.now().timestamp()
